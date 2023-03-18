@@ -9,18 +9,28 @@ export default function Articles(props) {
   // we should render a Navigate to login screen (React Router v.6)
 
   useEffect(() => {
+   props.getArticles();
+   
     // ✨ grab the articles here, on first render only
-  })
+  }, [])
+
+  if (!localStorage.getItem('token')) {
+      return <Navigate to='/' />
+  }
 
   return (
+
+   
     // ✨ fix the JSX: replace `Function.prototype` with actual functions
     // and use the articles prop to generate articles
     <div className="articles">
       <h2>Articles</h2>
       {
-        ![].length
+        !props.articles.length
           ? 'No articles yet'
-          : [].map(art => {
+          :
+          props.articles.map(art => {
+            
             return (
               <div className="article" key={art.article_id}>
                 <div>
@@ -29,8 +39,8 @@ export default function Articles(props) {
                   <p>Topic: {art.topic}</p>
                 </div>
                 <div>
-                  <button disabled={true} onClick={Function.prototype}>Edit</button>
-                  <button disabled={true} onClick={Function.prototype}>Delete</button>
+                  <button disabled={false} onClick={() => props.setCurrentArticleId(art)}>Edit</button>
+                  <button disabled={false} onClick={() => props.deleteArticle(art.article_id)}>Delete</button>
                 </div>
               </div>
             )
